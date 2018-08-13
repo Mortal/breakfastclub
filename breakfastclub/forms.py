@@ -133,7 +133,7 @@ class GenerateBreadListForm(FlaskForm):
         if shuffle:
             random.shuffle(people)
         for person in people:
-            if person.id in most_recent and most_recent[person.id] > b.date:
+            if person.id in most_recent and most_recent[person.id] > today:
                 # Skip person who is already on the future list
                 continue
             self.new_bringers.append(dict(person=person, person_id=person.id,
