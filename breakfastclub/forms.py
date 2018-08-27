@@ -82,10 +82,9 @@ class GenerateBreadListForm(FlaskForm):
                  for d in parsed_data]
 
         qs = db.session.query(BreadList)
-        qs = qs.order_by(BreadList.date.desc())
-        max_date = qs.first().date
-        if not all(date > max_date for date in dates):
-            self.data.errors.append('Invalid date.')
+        qs = qs.filter(BreadList.date.in_(dates)).all()
+        if len(qs) > 0:
+            self.data.errors.append('Dates already taken: %r' % list(qs))
             return False
 
         self.new_breadlist = [BreadList(person_id=p, date=d)
